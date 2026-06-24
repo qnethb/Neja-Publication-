@@ -1,0 +1,156 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import WhatsAppButton from '../../components/WhatsAppButton.astro';
+import TrailerEmbed from '../../components/TrailerEmbed.astro';
+import { books, isConfirmed } from '../../data/books.js';
+import { bookOrderLink } from '../../lib/whatsapp.js';
+
+export function getStaticPaths() {
+  return books.map((book) => ({
+    params: { slug: book.slug },
+    props: { book },
+  }));
+}
+
+const { book } = Astro.props;
+const orderHref = bookOrderLink(book);
+const orderLabel = `'${book.titleSi}' ඇණවුම් කරන්න`;
+const showPrice = isConfirmed(book.price);
+const showAuthor = isConfirmed(book.author);
+const showFormat = isConfirmed(book.format);
+---
+
+<BaseLayout
+  title={book.title}
+  description={book.hookEn}
+  image={book.cover}
+  type="book"
+  stickyHref={orderHref}
+  stickyLabel={orderLabel}
+>
+  <article>
+    <!-- ============ HERO ============ -->
+    <section class="relative isolate overflow-hidden border-b border-white/5">
+      <div class="absolute inset-0 -z-10 bg-gradient-to-br from-burgundy-deep via-ink to-indigo"></div>
+      <div
+        class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top_right,rgba(201,168,76,0.15),transparent_55%)]"
+      >
+      </div>
+
+      <div class="mx-auto grid max-w-5xl gap-8 px-4 py-14 md:grid-cols-[260px_1fr] md:gap-12 md:px-6 md:py-20">
+        <!-- Cover -->
+        <div class="reveal mx-auto w-48 md:w-full">
+          <div
+            class="relative aspect-[2/3] overflow-hidden rounded-2xl border border-white/10 bg-gradient-to-br from-burgundy-deep via-ink to-indigo shadow-2xl shadow-black/50"
+          >
+            <img
+              src={book.cover}
+              alt={book.coverAlt}
+              class="absolute inset-0 h-full w-full object-cover"
+              onerror="this.style.display='none'"
+            />
+          </div>
+        </div>
+
+        <!-- Title block -->
+        <div class="reveal flex flex-col justify-center text-center md:text-left">
+          <p class="text-xs uppercase tracking-[0.25em] text-indigo-soft">
+            {book.genre.join(' · ')}
+          </p>
+          <h1 class="mt-3 font-sinhala text-4xl font-extrabold leading-tight text-gold md:text-5xl" lang="si">
+            {book.titleSi}
+          </h1>
+          <p class="mt-2 text-xl text-parchment/85">{book.title}</p>
+
+          {
+            showAuthor ? (
+              <p class="mt-3 text-base text-parchment/70">by {book.author}</p>
+            ) : (
+              <p class="mt-3 text-sm text-muted">{book.author}</p>
+            )
+          }
+
+          <p class="mt-6 text-2xl font-semibold text-parchment">
+            {showPrice ? book.price : <span class="text-base text-muted">{book.price}</span>}
+          </p>
+
+          <ul class="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-1 text-sm text-parchment/70 md:justify-start">
+            {book.availability.map((a) => <li>· {a}</li>)}
+          </ul>
+
+          <div class="mt-8 flex flex-col items-center gap-3 sm:flex-row md:items-start">
+            <WhatsAppButton href={orderHref} label={orderLabel} />
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ STORY HOOK ============ -->
+    <section class="mx-auto max-w-3xl px-4 py-14 text-center md:px-6">
+      <h2 class="reveal text-xs uppercase tracking-[0.3em] text-gold/80">The Story</h2>
+      <p class="reveal mt-6 text-xl font-light leading-relaxed text-parchment md:text-2xl">
+        {book.hookEn}
+      </p>
+      {book.hookSi && (
+        <p class="reveal mt-5 font-sinhala text-lg leading-relaxed text-parchment/75" lang="si">
+          {book.hookSi}
+        </p>
+      )}
+    </section>
+
+    <!-- ============ THEMES ============ -->
+    <section class="mx-auto max-w-3xl px-4 pb-14 md:px-6">
+      <h2 class="reveal mb-5 text-center text-xs uppercase tracking-[0.3em] text-gold/80">
+        Themes
+      </h2>
+      <ul class="reveal flex flex-wrap justify-center gap-2.5">
+        {
+          book.themes.map((theme) => (
+            <li class="rounded-full border border-gold/40 bg-gold/5 px-4 py-1.5 text-sm text-gold-soft">
+              {theme}
+            </li>
+          ))
+        }
+      </ul>
+    </section>
+
+    <!-- ============ TRAILER (hidden cleanly if none) ============ -->
+    {
+      book.trailer && (
+        <section class="mx-auto max-w-4xl px-4 pb-14 md:px-6">
+          <h2 class="reveal mb-6 text-center text-xs uppercase tracking-[0.3em] text-gold/80">
+            Trailer
+          </h2>
+          <div class="reveal">
+            <TrailerEmbed trailer={book.trailer} title={`${book.title} trailer`} showPlaceholder={false} />
+          </div>
+        </section>
+      )
+    }
+
+    <!-- ============ PERSISTENT ORDER CTA ============ -->
+    <section class="border-t border-white/5 bg-ink-soft">
+      <div class="mx-auto max-w-3xl px-4 py-16 text-center md:px-6">
+        <h2 class="reveal font-sinhala text-2xl font-bold text-parchment md:text-3xl" lang="si">
+          මෙම පොත ඇණවුම් කරන්න
+        </h2>
+        <p class="reveal mt-2 text-sm text-muted">
+          Order on WhatsApp · Islandwide delivery · Cash on delivery
+        </p>
+        {
+          !showFormat && (
+            <p class="reveal mt-3 text-xs text-muted">Format: {book.format}</p>
+          )
+        }
+        <div class="reveal mt-7 flex justify-center">
+          <WhatsAppButton href={orderHref} label={orderLabel} />
+        </div>
+        <p class="reveal mt-6">
+          <a href="/books" class="text-sm text-gold transition-colors hover:text-gold-soft">
+            &larr; All books
+          </a>
+        </p>
+      </div>
+    </section>
+  </article>
+</BaseLayout>

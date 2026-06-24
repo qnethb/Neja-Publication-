@@ -1,0 +1,50 @@
+---
+// Renders a trailer from a `trailer` object, or a graceful placeholder if none.
+// Accepts: { type: 'youtube', id: 'XXXX' } or { type: 'file', src: '/path.mp4', poster?: '/poster.jpg' }
+// When `trailer` is null/undefined and `showPlaceholder` is false, renders nothing.
+const { trailer = null, title = 'Trailer', showPlaceholder = true } = Astro.props;
+---
+
+{
+  trailer && trailer.type === 'youtube' && (
+    <div class="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-black">
+      <iframe
+        class="h-full w-full"
+        src={`https://www.youtube-nocookie.com/embed/${trailer.id}`}
+        title={title}
+        loading="lazy"
+        frameborder="0"
+        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+        allowfullscreen
+      />
+    </div>
+  )
+}
+
+{
+  trailer && trailer.type === 'file' && (
+    <div class="aspect-video w-full overflow-hidden rounded-2xl border border-white/10 bg-black">
+      <video
+        class="h-full w-full object-cover"
+        controls
+        preload="none"
+        poster={trailer.poster}
+      >
+        <source src={trailer.src} type="video/mp4" />
+      </video>
+    </div>
+  )
+}
+
+{
+  !trailer && showPlaceholder && (
+    <div class="flex aspect-video w-full flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-gold/30 bg-gradient-to-br from-ink-soft to-indigo/20 text-center">
+      <svg class="h-12 w-12 text-gold/50" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+        <circle cx="12" cy="12" r="9" />
+        <path d="M10 9l5 3-5 3V9z" fill="currentColor" stroke="none" />
+      </svg>
+      <p class="text-sm text-muted">Trailer coming soon</p>
+      <p class="font-sinhala text-xs text-muted/70" lang="si">පෙරදසුන ඉක්මනින්</p>
+    </div>
+  )
+}

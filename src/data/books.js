@@ -1,346 +1,88 @@
-// Neja Publication sample catalogue.
-// Prices in LKR. coverColor drives the generated typographic cover.
-// badge: 'new' | 'best' | 'sale' | null. flags: featured / bestseller / newRelease.
-// `added` is a sort key (higher = newer).
-
-export const categories = [
-  'sinhala-literature',
-  'english-fiction',
-  'childrens',
-  'poetry',
-  'academic',
-  'religion',
-  'biography',
-]
+// ============================================================
+//  Neja Publications — single source of truth for all book content.
+//  Add a new title by appending an object to the `books` array below;
+//  every page (home, catalog, individual book page) is generated from
+//  this file — no page edits required.
+//
+//  HARD RULE: do not invent prices, authors, dates, formats, or quotes.
+//  Anything unknown stays as the string "❓ TODO: …" with a // TODO note,
+//  so it renders visibly on the site and nothing is silently guessed.
+// ============================================================
 
 export const books = [
   {
-    id: 'meda-yamaya',
-    title: 'Meda Yamaya',
-    titleSi: 'මැද යාමය',
-    author: 'Nimal Senaratne',
-    authorSi: 'නිමල් සේනාරත්න',
-    price: 1250,
-    category: 'sinhala-literature',
-    language: 'sinhala',
-    pages: 312,
-    isbn: '978-955-0001-01',
-    coverColor: '#0f5e5a',
-    badge: 'best',
+    slug: 'rudraksha',
+    title: 'Rudraksha',
+    titleSi: 'රුද්‍රාක්ෂ',
+    author: 'Prarthana Bandara',
+    authorSi: 'ප්‍රාර්ථනා බණ්ඩාර', // TODO: confirm exact Sinhala spelling of the author's name
+    genre: ['Mythological Fantasy', 'Mystery', 'Spiritual Thriller'],
+    themes: [
+      'Past lives',
+      'Sinhala mysticism',
+      'Yanthra & Manthra',
+      'Star gates',
+      'Ancient knowledge',
+      'Ayurvedic healing',
+      'Destiny',
+    ],
+    hookEn:
+      'A mystery rooted in forgotten Sinhala knowledge unfolds across time, connecting past lives, sacred traditions, hidden forces, and a destiny that refuses to remain buried.',
+    // TODO: confirm an official Sinhala translation of the hook from the publisher.
+    hookSi: null,
+    price: 'LKR 1,500',
+    availability: ['Islandwide Delivery', 'Cash on Delivery'],
+    format: '❓ TODO: confirm format (paperback / hardcover / pages)',
+    cover: '/assets/covers/rudraksha.svg', // placeholder — swap for rudraksha.jpg, see public/assets/README.md
+    coverAlt: "Cover of the novel Rudraksha (රුද්‍රාක්ෂ) by Prarthana Bandara",
+    trailer: null, // e.g. { type: 'youtube', id: 'XXXXXXXXXXX' } or { type: 'file', src: '/assets/trailers/rudraksha.mp4' }
     featured: true,
-    bestseller: true,
-    added: 90,
-    synopsis:
-      'A sweeping novel set in a Kandyan village across three generations, weaving memory, loss and the quiet courage of ordinary life.',
-    synopsisSi:
-      'පරම්පරා තුනක් පුරා දිවෙන, මහනුවර ගම්මානයක් පසුබිම් කරගත්, මතකය, වියෝගය සහ සාමාන්‍ය ජීවිතයේ නිහඬ ධෛර්යය ගෙතූ විශිෂ්ට නවකතාවකි.',
+    latest: true,
   },
   {
-    id: 'sandella',
-    title: 'Sandella',
-    titleSi: 'සඳෙල්ල',
-    author: 'Kumari Wijesinghe',
-    authorSi: 'කුමාරි විජේසිංහ',
-    price: 980,
-    category: 'sinhala-literature',
-    language: 'sinhala',
-    pages: 248,
-    isbn: '978-955-0001-02',
-    coverColor: '#7b3f9e',
-    badge: null,
-    featured: true,
-    bestseller: false,
-    added: 70,
-    synopsis:
-      'A tender love story that unfolds between the paddy fields and city lights, asking how much of ourselves we trade for our dreams.',
-    synopsisSi:
-      'කුඹුරු යාය සහ නගරයේ ආලෝකය අතර දිගහැරෙන මුදු ආදර කතාවක් — අපගේ සිහින වෙනුවෙන් අප කොපමණ දෙයක් වෙළඳාම් කරන්නේද යන්න විමසයි.',
-  },
-  {
-    id: 'the-cinnamon-coast',
-    title: 'The Cinnamon Coast',
-    titleSi: 'කුරුඳු වෙරළ',
-    author: 'Ayesha Fernando',
-    authorSi: 'ආයේෂා ප්‍රනාන්දු',
-    price: 1650,
-    category: 'english-fiction',
-    language: 'english',
-    pages: 380,
-    isbn: '978-955-0001-03',
-    coverColor: '#c0562a',
-    badge: 'best',
-    featured: true,
-    bestseller: true,
-    added: 85,
-    synopsis:
-      'Spanning colonial Galle to modern Colombo, a family saga of spice traders, secrets and the sea that binds them all.',
-    synopsisSi:
-      'යටත්විජිත ගාල්ල සිට නවීන කොළඹ දක්වා විහිදෙන, කුළුබඩු වෙළෙන්දන්, රහස් සහ ඔවුන් සියල්ල බැඳ තබන මුහුද පිළිබඳ පවුල් කතාවකි.',
-  },
-  {
-    id: 'monsoon-letters',
-    title: 'Monsoon Letters',
-    titleSi: 'මෝසම් ලිපි',
-    author: 'Dilshan Perera',
-    authorSi: 'දිල්ශාන් පෙරේරා',
-    price: 1450,
-    category: 'english-fiction',
-    language: 'english',
-    pages: 296,
-    isbn: '978-955-0001-04',
-    coverColor: '#1f6f8b',
-    badge: 'new',
+    slug: 'hasthipura-walawwa',
+    // TODO: CONFIRM SPELLING — the brief shows "හස්තපුර වලව්ව" but it may be
+    // "හස්තිපුර වලව්ව". Left exactly as given in the brief; do not silently change.
+    title: 'Hasthipura Walawwa', // romanized; confirm preferred English transliteration
+    titleSi: 'හස්තපුර වලව්ව',
+    author: '❓ TODO: confirm author',
+    authorSi: null,
+    genre: ['Historical Mystery', 'Romance'],
+    themes: [
+      'Sinhala heritage',
+      'Family legacy',
+      'Secrets',
+      'Love',
+      'Historical intrigue',
+    ],
+    hookEn:
+      'Within the walls of an aristocratic Sinhala estate, hidden truths begin to surface, forcing past and present into a collision that changes everything.',
+    hookSi: null, // TODO: confirm official Sinhala hook
+    price: '❓ TODO: confirm price',
+    availability: ['Islandwide Delivery', 'Cash on Delivery'],
+    format: '❓ TODO: confirm format',
+    cover: '/assets/covers/hasthipura.svg', // placeholder — swap for hasthipura.jpg, see public/assets/README.md
+    coverAlt: 'Cover of the novel Hasthipura Walawwa (හස්තපුර වලව්ව)',
+    trailer: null,
     featured: false,
-    bestseller: false,
-    newRelease: true,
-    added: 98,
-    synopsis:
-      'Two strangers exchange letters through a season of rains, discovering that distance can hold its own kind of closeness.',
-    synopsisSi:
-      'වැසි කාලයක් පුරා ආගන්තුකයන් දෙදෙනෙකු ලිපි හුවමාරු කරගනිමින්, දුර බව තුළද සමීපත්වයක් පවතින බව සොයාගනිති.',
+    latest: false,
   },
-  {
-    id: 'punchi-puthu',
-    title: 'Punchi Puthu and the Mango Moon',
-    titleSi: 'පුංචි පුතු සහ අඹ සඳ',
-    author: 'Saman Liyanage',
-    authorSi: 'සමන් ලියනගේ',
-    price: 650,
-    category: 'childrens',
-    language: 'bilingual',
-    pages: 32,
-    isbn: '978-955-0001-05',
-    coverColor: '#e8654f',
-    badge: 'best',
-    featured: true,
-    bestseller: true,
-    added: 75,
-    synopsis:
-      'A beautifully illustrated picture book about a curious little boy who climbs a mango tree to visit the moon. Ages 3–7.',
-    synopsisSi:
-      'සඳ බැලීමට අඹ ගසකට නගින කුතුහලයෙන් පිරි පුංචි පිරිමි ළමයෙකු පිළිබඳ ලස්සනට චිත්‍ර සහිත පින්තූර පොතකි. වයස 3–7.',
-  },
-  {
-    id: 'animal-friends',
-    title: 'My First Animal Friends',
-    titleSi: 'මගේ පළමු සත්ව මිතුරෝ',
-    author: 'Neja Kids Studio',
-    authorSi: 'නේජා කිඩ්ස් ස්ටුඩියෝ',
-    price: 480,
-    category: 'childrens',
-    language: 'bilingual',
-    pages: 24,
-    isbn: '978-955-0001-06',
-    coverColor: '#2e9e5b',
-    badge: null,
-    featured: false,
-    bestseller: false,
-    added: 60,
-    synopsis:
-      'A bilingual board book introducing little ones to Sri Lankan animals in both Sinhala and English. Sturdy pages for tiny hands.',
-    synopsisSi:
-      'සිංහල හා ඉංග්‍රීසි දෙඅංශයෙන්ම ශ්‍රී ලාංකික සතුන් පුංචි දරුවන්ට හඳුන්වා දෙන ද්විභාෂා පොතකි. කුඩා අත් සඳහා ශක්තිමත් පිටු.',
-  },
-  {
-    id: 'kavi-mihira',
-    title: 'Kavi Mihira',
-    titleSi: 'කවි මිහිර',
-    author: 'Ranjith Bandara',
-    authorSi: 'රංජිත් බණ්ඩාර',
-    price: 720,
-    category: 'poetry',
-    language: 'sinhala',
-    pages: 120,
-    isbn: '978-955-0001-07',
-    coverColor: '#b8860b',
-    badge: null,
-    featured: false,
-    bestseller: true,
-    added: 55,
-    synopsis:
-      'A celebrated collection of contemporary Sinhala verse on love, land and longing — lyrical, rooted and quietly radical.',
-    synopsisSi:
-      'ආදරය, භූමිය සහ ආශාව පිළිබඳ සමකාලීන සිංහල කවි එකතුවක් — ගීතමය, මුල් බැසගත් සහ නිහඬව විප්ලවීය.',
-  },
-  {
-    id: 'island-of-verses',
-    title: 'Island of Verses',
-    titleSi: 'කවි දිවයින',
-    author: 'Thanuja Rajapaksha',
-    authorSi: 'තනුජා රාජපක්ෂ',
-    price: 890,
-    category: 'poetry',
-    language: 'english',
-    pages: 96,
-    isbn: '978-955-0001-08',
-    coverColor: '#4a5d7e',
-    badge: 'new',
-    featured: false,
-    bestseller: false,
-    newRelease: true,
-    added: 95,
-    synopsis:
-      'English poems that map an island heart — its tides, its temples, its tea-dark mornings — by one of Sri Lanka’s freshest voices.',
-    synopsisSi:
-      'ශ්‍රී ලංකාවේ නවතම හඬක් විසින් දිවයිනක හදවත — එහි රළ, එහි පන්සල්, එහි තේ වැනි අඳුරු උදෑසන් — සිතියම්ගත කරන ඉංග්‍රීසි කවි.',
-  },
-  {
-    id: 'olevel-science',
-    title: 'O/L Science Made Simple',
-    titleSi: 'සා/පෙළ විද්‍යාව පහසුවෙන්',
-    author: 'Dr. P. Gunawardena',
-    authorSi: 'ආචාර්ය පී. ගුණවර්ධන',
-    price: 1350,
-    category: 'academic',
-    language: 'sinhala',
-    pages: 420,
-    isbn: '978-955-0001-09',
-    coverColor: '#1565c0',
-    badge: 'best',
-    featured: false,
-    bestseller: true,
-    added: 50,
-    synopsis:
-      'A complete, syllabus-aligned revision guide for G.C.E. O/L Science with model papers, diagrams and past-paper answers.',
-    synopsisSi:
-      'ආදර්ශ ප්‍රශ්න පත්‍ර, රූප සටහන් සහ පසුගිය ප්‍රශ්න පත්‍ර පිළිතුරු සහිත, විෂය නිර්දේශයට අනුකූල සම්පූර්ණ සා/පෙළ විද්‍යා පුනරීක්ෂණ මාර්ගෝපදේශය.',
-  },
-  {
-    id: 'spoken-english',
-    title: 'Spoken English for Everyone',
-    titleSi: 'හැමෝටම කතා ඉංග්‍රීසි',
-    author: 'Nadeesha Silva',
-    authorSi: 'නදීෂා සිල්වා',
-    price: 990,
-    category: 'academic',
-    language: 'bilingual',
-    pages: 210,
-    isbn: '978-955-0001-10',
-    coverColor: '#00838f',
-    badge: null,
-    featured: true,
-    bestseller: false,
-    added: 65,
-    synopsis:
-      'Build confidence in English step by step, with Sinhala explanations, everyday dialogues and practice drills for self-study.',
-    synopsisSi:
-      'සිංහල පැහැදිලි කිරීම්, දෛනික සංවාද සහ ස්වයං අධ්‍යයන අභ්‍යාස සමඟ පියවරෙන් පියවර ඉංග්‍රීසියෙහි විශ්වාසය ගොඩනඟා ගන්න.',
-  },
-  {
-    id: 'dhamma-path',
-    title: 'The Dhamma Path',
-    titleSi: 'ධම්ම මාර්ගය',
-    author: 'Ven. Sumana Thero',
-    authorSi: 'පූජ්‍ය සුමන හිමි',
-    price: 760,
-    category: 'religion',
-    language: 'sinhala',
-    pages: 180,
-    isbn: '978-955-0001-11',
-    coverColor: '#d98a12',
-    badge: null,
-    featured: false,
-    bestseller: true,
-    added: 45,
-    synopsis:
-      'Accessible reflections on Buddhist teachings for daily life — mindfulness, compassion and equanimity, explained with warmth.',
-    synopsisSi:
-      'දෛනික ජීවිතය සඳහා බෞද්ධ ඉගැන්වීම් පිළිබඳ පහසුවෙන් වටහාගත හැකි කල්පනා — සිහිය, කරුණාව සහ උපේක්ෂාව, උණුසුම්ව පැහැදිලි කෙරේ.',
-  },
-  {
-    id: 'questions-of-mind',
-    title: 'Questions of the Mind',
-    titleSi: 'සිතේ ප්‍රශ්න',
-    author: 'Prof. H. Jayawardena',
-    authorSi: 'මහාචාර්ය එච්. ජයවර්ධන',
-    price: 1180,
-    category: 'religion',
-    language: 'english',
-    pages: 264,
-    isbn: '978-955-0001-12',
-    coverColor: '#5d4037',
-    badge: null,
-    featured: false,
-    bestseller: false,
-    added: 40,
-    synopsis:
-      'A thoughtful introduction to Eastern and Western philosophy, inviting readers to think clearly about meaning, ethics and the self.',
-    synopsisSi:
-      'අර්ථය, සදාචාරය සහ ආත්මය ගැන පැහැදිලිව සිතීමට පාඨකයන් ආරාධනා කරන, පෙරදිග හා බටහිර දර්ශනය පිළිබඳ සිතුවිලිමත් හැඳින්වීමකි.',
-  },
-  {
-    id: 'a-life-in-tea',
-    title: 'A Life in Tea',
-    titleSi: 'තේ සමඟ ජීවිතයක්',
-    author: 'Margaret Ondaatje',
-    authorSi: 'මාග්‍රට් ඔන්දච්චි',
-    price: 1550,
-    category: 'biography',
-    language: 'english',
-    pages: 340,
-    isbn: '978-955-0001-13',
-    coverColor: '#2e7d32',
-    badge: 'new',
-    featured: true,
-    bestseller: false,
-    newRelease: true,
-    added: 99,
-    synopsis:
-      'The remarkable memoir of a woman who rose from the hill-country estates to run one of Ceylon’s great tea houses.',
-    synopsisSi:
-      'කඳුකර වතුවලින් නැගිට, සිලෝනයේ විශිෂ්ට තේ ආයතනයක් මෙහෙයවූ කාන්තාවකගේ විස්මිත ස්වයං චරිතාපදානය.',
-  },
-  {
-    id: 'builder-of-bridges',
-    title: 'Builder of Bridges',
-    titleSi: 'පාලම් තැනූ තැනැත්තා',
-    author: 'Asoka Weerasooriya',
-    authorSi: 'අශෝක වීරසූරිය',
-    price: 1290,
-    category: 'biography',
-    language: 'sinhala',
-    pages: 288,
-    isbn: '978-955-0001-14',
-    coverColor: '#37474f',
-    badge: null,
-    featured: false,
-    bestseller: false,
-    added: 48,
-    synopsis:
-      'The life of a pioneering Sri Lankan engineer whose roads and bridges quietly stitched a young nation together.',
-    synopsisSi:
-      'තම මාර්ග සහ පාලම් මගින් නිහඬව තරුණ ජාතියක් එක්තැන් කළ පුරෝගාමී ශ්‍රී ලාංකික ඉංජිනේරුවෙකුගේ ජීවිතය.',
-  },
-  {
-    id: 'weli-para',
-    title: 'Weli Para',
-    titleSi: 'වැලි පාර',
-    author: 'Chaminda Rathnayake',
-    authorSi: 'චමින්ද රත්නායක',
-    price: 1100,
-    category: 'sinhala-literature',
-    language: 'sinhala',
-    pages: 276,
-    isbn: '978-955-0001-15',
-    coverColor: '#8d6e63',
-    badge: null,
-    featured: false,
-    bestseller: false,
-    newRelease: true,
-    added: 92,
-    synopsis:
-      'A gripping coastal drama about a fishing community facing change, tradition and the pull of the open sea.',
-    synopsisSi:
-      'වෙනස, සම්ප්‍රදාය සහ විවෘත මුහුදේ ඇදීම හමුවේ සිටින ධීවර ප්‍රජාවක් පිළිබඳ ආකර්ෂණීය වෙරළබඩ නාට්‍යයකි.',
-  },
-]
+];
 
-export function getBook(id) {
-  return books.find((b) => b.id === id) || null
+// --- Derived helpers (used across pages so logic lives in one place) ---
+
+/** Find a single book by its URL slug. Returns null if not found. */
+export function getBook(slug) {
+  return books.find((b) => b.slug === slug) || null;
 }
 
-export function getRelated(book, limit = 4) {
-  return books
-    .filter((b) => b.id !== book.id && b.category === book.category)
-    .slice(0, limit)
+/** Books flagged to appear in the home "Featured" section. */
+export const featuredBooks = books.filter((b) => b.featured);
+
+/** The most recent release, used for the home "Latest Release" block. */
+export const latestRelease = books.find((b) => b.latest) || books[0];
+
+/** True when a value is a confirmed, real value (not a TODO placeholder). */
+export function isConfirmed(value) {
+  return typeof value === 'string' && value.length > 0 && !value.includes('TODO');
 }

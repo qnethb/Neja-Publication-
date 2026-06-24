@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-label="Hero backdrop placeholder">
+  <defs>
+    <linearGradient id="h" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a1212"/>
+      <stop offset="0.5" stop-color="#0d0d0d"/>
+      <stop offset="1" stop-color="#2c3e72"/>
+    </linearGradient>
+    <radialGradient id="hg" cx="50%" cy="20%" r="70%">
+      <stop offset="0" stop-color="#c9a84c" stop-opacity="0.22"/>
+      <stop offset="1" stop-color="#c9a84c" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <rect width="1600" height="900" fill="url(#h)"/>
+  <rect width="1600" height="900" fill="url(#hg)"/>
+  <text x="800" y="470" text-anchor="middle" font-family="'Noto Sans', sans-serif" font-size="26" letter-spacing="4" fill="#b9b2a6">HERO IMAGE / VIDEO PLACEHOLDER — REPLACE</text>
+</svg>

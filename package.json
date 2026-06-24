@@ -1,22 +1,20 @@
 {
-  "name": "neja-publication",
-  "private": true,
-  "version": "1.0.0",
+  "name": "neja-publications",
   "type": "module",
-  "description": "Neja Publication — online bookstore for Sri Lanka (English + Sinhala)",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Neja Publications (නේජා ප්‍රකාශන) — cinematic Sinhala storytelling. Static marketing site that converts Facebook visitors into pre-filled WhatsApp orders.",
   "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "preview": "vite preview"
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "astro": "astro"
   },
   "dependencies": {
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "react-router-dom": "^6.26.2"
-  },
-  "devDependencies": {
-    "@vitejs/plugin-react": "^4.3.1",
-    "playwright": "^1.61.1",
-    "vite": "^5.4.8"
+    "astro": "^5.6.0",
+    "@astrojs/sitemap": "^3.3.0",
+    "@tailwindcss/vite": "^4.1.0",
+    "tailwindcss": "^4.1.0"
   }
 }

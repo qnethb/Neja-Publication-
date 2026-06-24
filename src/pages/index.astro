@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import WhatsAppButton from '../components/WhatsAppButton.astro';
+import BookCard from '../components/BookCard.astro';
+import TrailerEmbed from '../components/TrailerEmbed.astro';
+import { site } from '../data/site.js';
+import { featuredBooks, latestRelease, isConfirmed } from '../data/books.js';
+import { genericContactLink, bookOrderLink } from '../lib/whatsapp.js';
+---
+
+<BaseLayout title={null} description={site.defaultDescription}>
+  <!-- ============ HERO ============ -->
+  <section class="relative isolate overflow-hidden">
+    <!-- Full-bleed cinematic backdrop (placeholder gradient until hero art/video is added) -->
+    <div
+      class="absolute inset-0 -z-10 bg-gradient-to-br from-burgundy-deep via-ink to-indigo"
+    >
+    </div>
+    <div
+      class="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_top,rgba(201,168,76,0.18),transparent_60%)]"
+    >
+    </div>
+    <!-- TODO: drop a hero image/video at /assets/hero-poster.jpg + /assets/hero.mp4 (see assets README) -->
+
+    <div class="mx-auto flex min-h-[82vh] max-w-5xl flex-col items-center justify-center px-4 py-24 text-center md:px-6">
+      <p class="reveal mb-5 text-xs uppercase tracking-[0.35em] text-gold/80">
+        {site.name}
+      </p>
+      <h1
+        class="reveal font-sinhala text-4xl font-extrabold leading-[1.15] text-parchment sm:text-5xl md:text-6xl"
+        lang="si"
+      >
+        {site.heroHeadlineSi}
+      </h1>
+      <p
+        class="reveal mt-6 max-w-2xl font-sinhala text-lg leading-relaxed text-parchment/80 md:text-xl"
+        lang="si"
+      >
+        {site.heroSubheadSi}
+      </p>
+      <p class="reveal mt-3 text-sm uppercase tracking-[0.2em] text-muted">
+        {site.positioning}
+      </p>
+      <div class="reveal mt-9 flex flex-col items-center gap-3 sm:flex-row">
+        <WhatsAppButton href={genericContactLink()} label={site.heroCtaSi} />
+        <a
+          href="/books"
+          class="inline-flex items-center justify-center gap-2 rounded-full border border-gold/50 px-6 py-3.5 text-base font-semibold text-gold transition-colors hover:bg-gold hover:text-ink"
+        >
+          <span class="font-sinhala" lang="si">පොත් නරඹන්න</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ FEATURED BOOKS ============ -->
+  <section class="mx-auto max-w-6xl px-4 py-16 md:px-6 md:py-20">
+    <header class="reveal mb-10 text-center">
+      <h2 class="text-3xl font-bold text-parchment md:text-4xl">Featured</h2>
+      <p class="mt-2 font-sinhala text-base text-muted" lang="si">විශේෂිත පොත්</p>
+    </header>
+    <div class="grid grid-cols-2 gap-5 sm:gap-6 lg:grid-cols-3">
+      {featuredBooks.map((book) => <BookCard book={book} />)}
+    </div>
+  </section>
+
+  <!-- ============ TRAILER ============ -->
+  <section class="mx-auto max-w-4xl px-4 py-16 md:px-6 md:py-20">
+    <header class="reveal mb-8 text-center">
+      <h2 class="text-3xl font-bold text-parchment md:text-4xl">Watch the Trailer</h2>
+      <p class="mt-2 font-sinhala text-base text-muted" lang="si">පෙරදසුන</p>
+    </header>
+    <div class="reveal">
+      <TrailerEmbed trailer={latestRelease.trailer} title={`${latestRelease.title} trailer`} />
+    </div>
+    <p class="reveal mt-4 text-center text-sm text-muted">
+      <a href="/trailers" class="text-gold transition-colors hover:text-gold-soft"
+        >See all trailers &rarr;</a
+      >
+    </p>
+  </section>
+
+  <!-- ============ BRAND STORY TEASER ============ -->
+  <section class="relative overflow-hidden border-y border-white/5 bg-ink-soft">
+    <div class="mx-auto max-w-3xl px-4 py-20 text-center md:px-6">
+      <p class="reveal text-xs uppercase tracking-[0.3em] text-gold/80">Our Story</p>
+      <blockquote
+        class="reveal mt-6 text-2xl font-light leading-relaxed text-parchment md:text-3xl"
+      >
+        “{site.positioning}”
+      </blockquote>
+      <p class="reveal mt-6 max-w-xl mx-auto text-base leading-relaxed text-parchment/70">
+        Neja Publications brings the depth of Sinhala literature to a new generation —
+        stories told with the scale and atmosphere of cinema.
+      </p>
+      <a
+        href="/about"
+        class="reveal mt-8 inline-flex items-center gap-2 text-base font-semibold text-gold transition-colors hover:text-gold-soft"
+      >
+        Read our story &rarr;
+      </a>
+    </div>
+  </section>
+
+  <!-- ============ LATEST RELEASE ============ -->
+  <section class="mx-auto max-w-5xl px-4 py-16 md:px-6 md:py-20">
+    <header class="reveal mb-8 text-center">
+      <h2 class="text-3xl font-bold text-parchment md:text-4xl">Latest Release</h2>
+      <p class="mt-2 font-sinhala text-base text-muted" lang="si">නවතම නිකුතුව</p>
+    </header>
+    <div
+      class="reveal grid items-center gap-8 rounded-3xl border border-white/8 bg-gradient-to-br from-ink-soft to-indigo/15 p-6 md:grid-cols-[200px_1fr] md:p-10"
+    >
+      <div
+        class="relative mx-auto aspect-[2/3] w-40 overflow-hidden rounded-xl bg-gradient-to-br from-burgundy-deep via-ink to-indigo md:w-full"
+      >
+        <img
+          src={latestRelease.cover}
+          alt={latestRelease.coverAlt}
+          loading="lazy"
+          class="absolute inset-0 h-full w-full object-cover"
+          onerror="this.style.display='none'"
+        />
+      </div>
+      <div>
+        <h3 class="font-sinhala text-3xl font-bold text-gold" lang="si">
+          {latestRelease.titleSi}
+        </h3>
+        <p class="mt-1 text-lg text-parchment/85">{latestRelease.title}</p>
+        <p class="mt-4 leading-relaxed text-parchment/75">{latestRelease.hookEn}</p>
+        <div class="mt-6 flex flex-wrap items-center gap-3">
+          <WhatsAppButton
+            href={bookOrderLink(latestRelease)}
+            label={`'${latestRelease.titleSi}' ඇණවුම් කරන්න`}
+          />
+          <a
+            href={`/books/${latestRelease.slug}`}
+            class="inline-flex items-center gap-2 rounded-full border border-gold/50 px-6 py-3.5 text-base font-semibold text-gold transition-colors hover:bg-gold hover:text-ink"
+          >
+            Details &rarr;
+          </a>
+        </div>
+        {
+          !isConfirmed(latestRelease.price) && (
+            <p class="mt-3 text-xs text-muted">{latestRelease.price}</p>
+          )
+        }
+      </div>
+    </div>
+  </section>
+</BaseLayout>

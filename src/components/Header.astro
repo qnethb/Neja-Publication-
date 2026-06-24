@@ -1,0 +1,83 @@
+---
+import { site, nav } from '../data/site.js';
+const path = Astro.url.pathname;
+const isActive = (href) =>
+  href === '/' ? path === '/' : path.startsWith(href);
+---
+
+<header
+  class="sticky top-0 z-40 border-b border-white/5 bg-ink/85 backdrop-blur-md"
+>
+  <nav
+    class="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 md:px-6"
+    aria-label="Primary"
+  >
+    <a href="/" class="group flex flex-col leading-tight" aria-label={`${site.name} home`}>
+      <span class="font-sinhala text-lg font-bold text-gold" lang="si"
+        >{site.nameSi}</span
+      >
+      <span
+        class="text-[0.65rem] uppercase tracking-[0.25em] text-muted group-hover:text-parchment"
+        >{site.name}</span
+      >
+    </a>
+
+    <ul class="hidden items-center gap-1 md:flex">
+      {
+        nav.map((item) => (
+          <li>
+            <a
+              href={item.href}
+              aria-current={isActive(item.href) ? 'page' : undefined}
+              class:list={[
+                'rounded-full px-3.5 py-2 text-sm transition-colors',
+                isActive(item.href)
+                  ? 'text-gold'
+                  : 'text-parchment/80 hover:text-gold',
+              ]}
+            >
+              {item.label}
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+
+    <!-- Mobile menu (CSS-only via <details>, no JS) -->
+    <details class="relative md:hidden">
+      <summary
+        class="flex h-10 w-10 cursor-pointer list-none items-center justify-center rounded-full border border-white/10 text-gold"
+        aria-label="Open menu"
+      >
+        <svg class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+          <path d="M4 6h16M4 12h16M4 18h16" stroke-linecap="round" />
+        </svg>
+      </summary>
+      <ul
+        class="absolute right-0 mt-2 w-48 overflow-hidden rounded-xl border border-white/10 bg-ink-soft shadow-2xl"
+      >
+        {
+          nav.map((item) => (
+            <li class="border-b border-white/5 last:border-0">
+              <a
+                href={item.href}
+                aria-current={isActive(item.href) ? 'page' : undefined}
+                class:list={[
+                  'flex items-center justify-between px-4 py-3 text-sm',
+                  isActive(item.href)
+                    ? 'text-gold'
+                    : 'text-parchment/85 hover:bg-white/5 hover:text-gold',
+                ]}
+              >
+                <span>{item.label}</span>
+                <span class="font-sinhala text-xs text-muted" lang="si">
+                  {item.labelSi}
+                </span>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </details>
+  </nav>
+</header>

@@ -1,0 +1,102 @@
+@import 'tailwindcss';
+
+/* ============================================================
+   Neja Publications — brand design tokens (Tailwind v4 CSS-first)
+   Palette:  Black #0D0D0D · Burgundy #6B1D1D · Gold #C9A84C · Indigo #2C3E72
+   Fonts:    Sinhala = Abhaya Libre · English = Noto Sans
+   ============================================================ */
+@theme {
+  --color-ink: #0d0d0d;
+  --color-ink-soft: #141414;
+  --color-burgundy: #6b1d1d;
+  --color-burgundy-deep: #4a1212;
+  --color-gold: #c9a84c;
+  --color-gold-soft: #e0c97e;
+  --color-indigo: #2c3e72;
+  --color-indigo-soft: #3a4f8f;
+  --color-parchment: #f4efe6;
+  --color-muted: #b9b2a6;
+
+  /* WhatsApp brand green for the conversion CTA */
+  --color-whatsapp: #25d366;
+  --color-whatsapp-dark: #1da851;
+
+  --font-sans: 'Noto Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-sinhala: 'Abhaya Libre', 'Noto Sans Sinhala', serif;
+}
+
+/* ---- Base ---- */
+html {
+  scroll-behavior: smooth;
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--font-sans);
+  background-color: var(--color-ink);
+  color: var(--color-parchment);
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Sinhala text: apply lang="si" to any block, or use the .si utility */
+:lang(si),
+.si {
+  font-family: var(--font-sinhala);
+  line-height: 1.6;
+}
+
+/* ---- Accessibility ---- */
+:where(a, button, input, textarea, [tabindex]):focus-visible {
+  outline: 2px solid var(--color-gold);
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--color-gold);
+  color: var(--color-ink);
+  padding: 0.75rem 1rem;
+  font-weight: 600;
+}
+.skip-link:focus {
+  left: 0.5rem;
+  top: 0.5rem;
+}
+
+/* ---- Subtle scroll-reveal motion (progressive enhancement) ---- */
+.reveal {
+  opacity: 0;
+  transform: translateY(18px);
+  transition:
+    opacity 0.7s ease,
+    transform 0.7s ease;
+  will-change: opacity, transform;
+}
+.reveal.is-visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* If JS is off, never hide content */
+.no-js .reveal {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+}
