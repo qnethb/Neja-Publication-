@@ -1,0 +1,47 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import TrailerEmbed from '../components/TrailerEmbed.astro';
+import { books } from '../data/books.js';
+---
+
+<BaseLayout
+  title="Trailers"
+  description="Watch cinematic trailers, teasers, and reels for Neja Publications titles."
+>
+  <section class="mx-auto max-w-6xl px-4 py-14 md:px-6 md:py-20">
+    <header class="reveal mb-12 text-center">
+      <h1 class="text-4xl font-bold text-parchment md:text-5xl">Trailers</h1>
+      <p class="mt-3 font-sinhala text-lg text-muted" lang="si">පෙරදසුන්</p>
+    </header>
+
+    <div class="grid gap-8 md:grid-cols-2">
+      {
+        books.map((book) => (
+          <figure class="reveal">
+            <TrailerEmbed trailer={book.trailer} title={`${book.title} trailer`} />
+            <figcaption class="mt-3 flex items-baseline justify-between gap-3">
+              <div>
+                <span class="font-sinhala text-lg font-semibold text-gold" lang="si">
+                  {book.titleSi}
+                </span>
+                <span class="ml-2 text-sm text-parchment/70">{book.title}</span>
+              </div>
+              <a
+                href={`/books/${book.slug}`}
+                class="shrink-0 text-sm text-gold transition-colors hover:text-gold-soft"
+              >
+                View &rarr;
+              </a>
+            </figcaption>
+          </figure>
+        ))
+      }
+    </div>
+
+    <p class="reveal mt-12 text-center text-sm text-muted">
+      <!-- TODO: add real trailers by setting `trailer` on a book in src/data/books.js -->
+      More trailers are on the way.
+      <span class="font-sinhala" lang="si">තවත් පෙරදසුන් ඉක්මනින්.</span>
+    </p>
+  </section>
+</BaseLayout>

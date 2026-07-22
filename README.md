@@ -1,88 +1,111 @@
-# Neja Publication — Online Bookstore 📚
+# Neja Publications — නේජා ප්‍රකාශන
 
-A modern, bilingual (English + Sinhala) book-selling website built for the
-**Sri Lankan** market. Browse a catalogue of Sinhala & English titles, add books
-to a cart, and check out with **Cash on Delivery**, **Bank Transfer**, or a one-tap
-**WhatsApp order** — the three ways small Sri Lankan publishers actually take orders.
+The official website for **Neja Publications**, a Sri Lankan Sinhala-language book
+publisher. A cinematic, mobile-first landing platform with one job: move readers
+from **Facebook → website → a pre-filled WhatsApp order** (cash on delivery).
 
-Built as a fast, dependency-light **React + Vite** static site — no backend required,
-so it deploys anywhere for free.
+There is **no e-commerce, no cart, no payment gateway, no backend, no CMS**.
+Every order closes on WhatsApp.
 
-## ✨ Features
+- **Stack:** [Astro](https://astro.build) (static output) + [Tailwind CSS v4](https://tailwindcss.com)
+- **Fonts:** Abhaya Libre (Sinhala) · Noto Sans (English) — loaded via Google Fonts
+- **Hosting:** any static host — Netlify, Vercel, Cloudflare Pages, GitHub Pages
 
-- **Bilingual UI** — instant English ⇄ Sinhala (සිංහල) toggle, with correct Noto Sans
-  Sinhala rendering. The language choice is remembered between visits.
-- **Catalogue & search** — browse by category, search by title/author, and sort by
-  price or newest.
-- **Cart** — slide-in cart drawer with live totals, quantity controls, and a
-  free-delivery progress bar. Cart persists in `localStorage`.
-- **Checkout for Sri Lanka**:
-  - **District selector** (all 25 districts) with zone-based delivery fees.
-  - **Free island-wide delivery** over Rs. 5,000.
-  - Payment by **Cash on Delivery**, **Bank Transfer** (account details shown), or
-    **WhatsApp** (a formatted order message is pre-filled into a `wa.me` link).
-- **LKR pricing** throughout, formatted as `Rs. 1,250`.
-- **Mobile-first, responsive** design tuned for phone-heavy, variable-bandwidth users.
-- Generated typographic book covers (no image assets → nothing ever 404s).
+---
 
-## 🚀 Getting started
+## Run it locally
 
 ```bash
 npm install      # install dependencies
-npm run dev      # start the dev server (http://localhost:5173)
+npm run dev      # dev server at http://localhost:4321
 npm run build    # production build into dist/
 npm run preview  # preview the production build locally
 ```
 
-## 📦 Deployment
+---
 
-`npm run build` outputs a static site to `dist/`. Because `vite.config.js` sets
-`base: './'`, the build works from any path. Deploy `dist/` to:
+## Add a new book (edit data only)
 
-- **Netlify / Vercel / Cloudflare Pages** — point them at the repo; build command
-  `npm run build`, publish directory `dist`.
-- **GitHub Pages** — push the contents of `dist/` to a `gh-pages` branch.
+All book content lives in **one** file: [`src/data/books.js`](src/data/books.js).
+Adding a title automatically creates its catalog card **and** its own page at
+`/books/<slug>` — no page edits needed.
 
-> Note: routing uses the HTML5 history API (`BrowserRouter`). On static hosts,
-> add a redirect/rewrite of all paths to `index.html` (e.g. a Netlify `_redirects`
-> file with `/* /index.html 200`) so deep links like `/shop` work on refresh.
+1. Copy an existing object in the `books` array and edit the fields:
 
-## ✏️ Customising the store
+   ```js
+   {
+     slug: 'my-new-book',          // becomes /books/my-new-book
+     title: 'My New Book',
+     titleSi: 'මගේ අලුත් පොත',
+     author: 'Author Name',
+     genre: ['Genre A', 'Genre B'],
+     themes: ['Theme 1', 'Theme 2'],
+     hookEn: 'A spoiler-free one-paragraph hook.',
+     hookSi: null,                 // optional Sinhala hook
+     price: 'LKR 1,500',           // or '❓ TODO: confirm price' if unknown
+     availability: ['Islandwide Delivery', 'Cash on Delivery'],
+     format: '❓ TODO: confirm format',
+     cover: '/assets/covers/my-new-book.jpg',
+     coverAlt: 'Cover of My New Book',
+     trailer: null,                // or { type: 'youtube', id: '...' }
+     featured: false,              // true → shows in the home Featured section
+     latest: false,               // true → shows in the home Latest Release block
+   }
+   ```
 
-Everything you'll want to edit lives in plain data files:
+2. Drop the cover image into `public/assets/covers/` (see that folder's README).
 
-| What | File |
-| --- | --- |
-| Books (titles, prices, synopses, covers) | `src/data/books.js` |
-| Delivery districts & fees, free-delivery threshold | `src/data/districts.js` |
-| Bank details, address, email, social links | `src/data/business.js` |
-| WhatsApp business number | `src/utils/whatsapp.js` (`WHATSAPP_NUMBER`) |
-| UI text (English & Sinhala) | `src/i18n/translations.js` |
-| Colours, fonts, spacing | CSS variables at the top of `src/index.css` |
+> **Do not invent data.** If a value (price, author, format) isn't confirmed, use a
+> `❓ TODO: …` string — it renders visibly so nothing is silently guessed. See
+> [`TODO.md`](TODO.md) for all open items.
 
-**Before going live**, update the placeholder WhatsApp number, bank details, and
-contact info in the files above.
+### The WhatsApp order link
 
-## 🗂️ Project structure
-
-```
-src/
-  main.jsx              app entry (providers + router)
-  App.jsx               routes + layout
-  index.css             theme tokens & base styles
-  components.css        component / layout styles
-  i18n/translations.js  EN/SI dictionaries
-  context/              LanguageContext, CartContext
-  data/                 books, districts, business info
-  utils/                LKR formatting, delivery calc, WhatsApp link builder
-  components/           Navbar, Footer, Hero, BookCard, CartDrawer, …
-  pages/                Home, Shop, BookDetail, Checkout, About, Contact
-```
-
-## 🛠️ Tech
-
-React 18 · React Router 6 · Vite 5 · plain CSS (no UI framework).
+Every "order" button is generated by [`src/lib/whatsapp.js`](src/lib/whatsapp.js).
+`bookOrderLink(book)` builds a `wa.me` deep link pre-filled with a Sinhala message
+for that specific book. The business number lives **only** in that file
+(`WHATSAPP_NUMBER`).
 
 ---
 
-Made with ❤️ in Sri Lanka for Neja Publication.
+## Swap the placeholder assets
+
+The site ships with labeled SVG placeholders so nothing is broken on first run.
+To go live, replace them with real artwork — see
+[`public/assets/README.md`](public/assets/README.md) for the exact list, sizes,
+and the few one-line path updates needed (covers and the OG image should be
+real JPG/PNG so Facebook renders link previews).
+
+---
+
+## Deploy to Netlify
+
+1. Push this repo to GitHub.
+2. In Netlify: **Add new site → Import an existing project** and pick the repo.
+3. Build settings (Netlify auto-detects Astro, but to be explicit):
+   - **Build command:** `npm run build`
+   - **Publish directory:** `dist`
+4. Deploy. Astro produces fully static files, so no further configuration is needed.
+
+After the first deploy, set your real domain as `site` in
+[`astro.config.mjs`](astro.config.mjs) and update the URL in
+[`public/robots.txt`](public/robots.txt) so Open Graph and sitemap URLs are absolute.
+
+> Vercel, Cloudflare Pages, and GitHub Pages work the same way: build with
+> `npm run build`, serve the `dist/` folder.
+
+---
+
+## Project structure
+
+```
+src/
+  data/books.js          ← all book content (the one file you edit to add titles)
+  data/site.js           ← brand strings, nav, social links
+  lib/whatsapp.js        ← WhatsApp deep-link helpers (the conversion engine)
+  layouts/BaseLayout.astro  ← shared <head>, SEO + Open Graph, fonts, sticky CTA
+  components/             ← Header, Footer, BookCard, WhatsAppButton, StickyWhatsAppBar, TrailerEmbed
+  pages/                 ← home, books, books/[slug], about, trailers, news, contact
+  styles/global.css      ← Tailwind + brand design tokens
+public/assets/           ← placeholder images (covers, logo, hero, OG) + README
+```

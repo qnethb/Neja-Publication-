@@ -1,0 +1,87 @@
+---
+import { site, nav } from '../data/site.js';
+import { genericContactLink } from '../lib/whatsapp.js';
+import { isConfirmed } from '../data/books.js';
+const year = new Date().getFullYear();
+---
+
+<footer class="border-t border-white/5 bg-ink-soft">
+  <div class="mx-auto grid max-w-6xl gap-10 px-4 py-12 md:grid-cols-3 md:px-6">
+    <div>
+      <p class="font-sinhala text-xl font-bold text-gold" lang="si">{site.nameSi}</p>
+      <p class="mt-1 text-sm uppercase tracking-[0.2em] text-muted">{site.name}</p>
+      <p class="mt-4 max-w-xs text-sm leading-relaxed text-parchment/70">
+        {site.positioning}
+      </p>
+    </div>
+
+    <nav aria-label="Footer">
+      <h2 class="text-xs font-semibold uppercase tracking-wider text-gold/80">
+        Explore
+      </h2>
+      <ul class="mt-4 space-y-2">
+        {
+          nav.map((item) => (
+            <li>
+              <a
+                href={item.href}
+                class="text-sm text-parchment/75 transition-colors hover:text-gold"
+              >
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+
+    <div>
+      <h2 class="text-xs font-semibold uppercase tracking-wider text-gold/80">
+        Order &amp; Connect
+      </h2>
+      <ul class="mt-4 space-y-2 text-sm text-parchment/75">
+        <li>
+          <a
+            href={genericContactLink()}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="transition-colors hover:text-gold"
+          >
+            WhatsApp · {site.whatsappDisplay}
+          </a>
+        </li>
+        <li>
+          {
+            isConfirmed(site.facebook) ? (
+              <a
+                href={site.facebook}
+                target="_blank"
+                rel="noopener noreferrer"
+                class="transition-colors hover:text-gold"
+              >
+                Facebook
+              </a>
+            ) : (
+              <span class="text-muted">Facebook — {site.facebook}</span>
+            )
+          }
+        </li>
+        <li>
+          {
+            isConfirmed(site.email) ? (
+              <a href={`mailto:${site.email}`} class="transition-colors hover:text-gold">
+                {site.email}
+              </a>
+            ) : (
+              <span class="text-muted">Email — {site.email}</span>
+            )
+          }
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="border-t border-white/5 px-4 py-5 text-center text-xs text-muted md:px-6">
+    © {year} {site.name} ({site.nameSi}). Islandwide delivery · Cash on delivery.
+  </div>
+</footer>

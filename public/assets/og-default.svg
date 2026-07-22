@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630" role="img" aria-label="Neja Publications social share placeholder">
+  <defs>
+    <linearGradient id="og" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#4a1212"/>
+      <stop offset="0.5" stop-color="#0d0d0d"/>
+      <stop offset="1" stop-color="#2c3e72"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="630" fill="url(#og)"/>
+  <rect x="30" y="30" width="1140" height="570" fill="none" stroke="#c9a84c" stroke-opacity="0.4" stroke-width="2"/>
+  <text x="600" y="290" text-anchor="middle" font-family="'Abhaya Libre', serif" font-size="86" font-weight="800" fill="#c9a84c">නේජා ප්‍රකාශන</text>
+  <text x="600" y="360" text-anchor="middle" font-family="'Noto Sans', sans-serif" font-size="34" fill="#f4efe6" fill-opacity="0.85">Neja Publications</text>
+  <text x="600" y="420" text-anchor="middle" font-family="'Noto Sans', sans-serif" font-size="24" letter-spacing="2" fill="#e0c97e">The future of cinematic Sinhala storytelling</text>
+</svg>
