@@ -7,21 +7,20 @@ Resolve these, then remove the placeholder + its `// TODO` comment.
 ## Content — books (`src/data/books.js`)
 
 ### Rudraksha (රුද්‍රාක්ෂ)
-- [ ] **Author Sinhala spelling** — confirm `ප්‍රාර්ථනා බණ්ඩාර` for *Prarthana Bandara*.
-- [ ] **Format** — paperback / hardcover, page count.
+- [x] **Author Sinhala spelling** — `ප්‍රාර්ථනා බණ්ඩාර` for *Prarthana Bandara*. ✅ Confirmed.
+- [x] **Format** — Hardcover. ✅ Confirmed.
 - [ ] **Sinhala hook** — confirm an official Sinhala translation of the story hook (currently English only).
 
-### Hasthipura Walawwa (හස්තපුර වලව්ව)
-- [ ] **TITLE SPELLING** — brief shows `හස්තපුර වලව්ව`, but it may be `හස්තිපුර වලව්ව`. **Confirm before launch.** (Left exactly as given; not silently changed.)
-- [ ] **English transliteration** — confirm preferred romanization (currently "Hasthipura Walawwa").
-- [ ] **Author** — name (and Sinhala spelling).
-- [ ] **Price.**
-- [ ] **Format.**
+### Hasthipura Walawwa (හස්තිපුර වලව්ව)
+- [x] **TITLE SPELLING** — Updated to `හස්තිපුර වලව්ව`. ✅ Confirmed.
+- [x] **Author** — Prarthana Bandara (`ප්‍රාර්ථනා බණ්ඩාර`). ✅ Confirmed.
+- [x] **Price** — LKR 1,500. ✅ Confirmed.
+- [x] **Format** — Hardcover. ✅ Confirmed.
 - [ ] **Sinhala hook** — optional official Sinhala translation.
 
 ## Contact & social (`src/data/site.js`)
-- [ ] **Facebook page URL** — exact link (used in footer + contact page).
-- [ ] **Contact email** — enables the mailto contact form (currently disabled until set).
+- [x] **Facebook page URL** — `https://www.facebook.com/share/19VjaYyUns/?mibextid=wwXIfr`. ✅ Confirmed.
+- [x] **Contact email** — `nejapublications@gmail.com`. ✅ Confirmed (mailto form now enabled).
 
 ## Deployment / SEO
 - [ ] **Production URL** — set `site` in `astro.config.mjs` (currently `https://neja-publications.netlify.app` placeholder) and update `public/robots.txt`.

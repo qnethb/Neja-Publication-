@@ -32,7 +32,7 @@ export const books = [
     hookSi: null,
     price: 'LKR 1,500',
     availability: ['Islandwide Delivery', 'Cash on Delivery'],
-    format: '❓ TODO: confirm format (paperback / hardcover / pages)',
+    format: 'Hardcover',
     cover: '/assets/covers/rudraksha.svg', // placeholder — swap for rudraksha.jpg, see public/assets/README.md
     coverAlt: "Cover of the novel Rudraksha (රුද්‍රාක්ෂ) by Prarthana Bandara",
     trailer: null, // e.g. { type: 'youtube', id: 'XXXXXXXXXXX' } or { type: 'file', src: '/assets/trailers/rudraksha.mp4' }
@@ -41,12 +41,10 @@ export const books = [
   },
   {
     slug: 'hasthipura-walawwa',
-    // TODO: CONFIRM SPELLING — the brief shows "හස්තපුර වලව්ව" but it may be
-    // "හස්තිපුර වලව්ව". Left exactly as given in the brief; do not silently change.
-    title: 'Hasthipura Walawwa', // romanized; confirm preferred English transliteration
-    titleSi: 'හස්තපුර වලව්ව',
-    author: '❓ TODO: confirm author',
-    authorSi: null,
+    title: 'Hasthipura Walawwa',
+    titleSi: 'හස්තිපුර වලව්ව',
+    author: 'Prarthana Bandara',
+    authorSi: 'ප්‍රාර්ථනා බණ්ඩාර',
     genre: ['Historical Mystery', 'Romance'],
     themes: [
       'Sinhala heritage',
@@ -58,9 +56,9 @@ export const books = [
     hookEn:
       'Within the walls of an aristocratic Sinhala estate, hidden truths begin to surface, forcing past and present into a collision that changes everything.',
     hookSi: null, // TODO: confirm official Sinhala hook
-    price: '❓ TODO: confirm price',
+    price: 'LKR 1,500',
     availability: ['Islandwide Delivery', 'Cash on Delivery'],
-    format: '❓ TODO: confirm format',
+    format: 'Hardcover',
     cover: '/assets/covers/hasthipura.svg', // placeholder — swap for hasthipura.jpg, see public/assets/README.md
     coverAlt: 'Cover of the novel Hasthipura Walawwa (හස්තපුර වලව්ව)',
     trailer: null,

@@ -24,8 +24,8 @@ export const site = {
 
   // Contact
   whatsappDisplay: WHATSAPP_DISPLAY,
-  email: '❓ TODO: confirm contact email', // TODO: confirm publisher email for mailto fallback
-  facebook: '❓ TODO: confirm Facebook page URL', // TODO: confirm exact Facebook URL
+  email: 'nejapublications@gmail.com',
+  facebook: 'https://www.facebook.com/share/19VjaYyUns/?mibextid=wwXIfr',
 };
 
 // Primary navigation — used by header and footer.
