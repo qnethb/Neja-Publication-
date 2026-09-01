@@ -157,18 +157,17 @@ Two things worth knowing:
 
 ## Local development after this change
 
-The project no longer uses SQLite. For local work, either point `.env` at a **Neon development
-branch** (Neon → Branches → New Branch, then use that branch's two URLs) or run Postgres locally:
+The project no longer uses SQLite. The quickest local setup is the bundled Docker Postgres:
 
 ```bash
-docker run -d --name cinnamon-pg -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:16
-# .env:
-#   DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cinnamon"
-#   DIRECT_URL="postgresql://postgres:postgres@localhost:5432/cinnamon"
-
-npm run setup    # prisma generate + migrate deploy + seed
+cp .env.example .env   # defaults already match docker-compose.yml
+npm run db:up          # starts Postgres, waits until it is accepting connections
+npm run setup          # migrate + seed
 npm run dev
 ```
+
+Alternatively point `.env` at a **Neon development branch** (Neon → Branches → New Branch) using that
+branch's pooled and direct URLs, and skip `npm run db:up`.
 
 A Neon branch is usually the better choice: it is a copy-on-write clone of production data, so local
 behaviour matches deployed behaviour exactly.

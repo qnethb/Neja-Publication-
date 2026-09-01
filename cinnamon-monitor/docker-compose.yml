@@ -1,0 +1,27 @@
+# Local development database.
+#   npm run db:up    start it (waits until it accepts connections)
+#   npm run db:down  stop it, keeping the data
+#   npm run db:down -- -v   stop it and delete the data
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: cinnamon-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: cinnamon
+      POSTGRES_PASSWORD: cinnamon
+      POSTGRES_DB: cinnamon
+    ports:
+      - '5432:5432'
+    volumes:
+      - cinnamon-pgdata:/var/lib/postgresql/data
+    healthcheck:
+      # `npm run db:up` uses --wait, which honours this. Without it, migrations
+      # race the server's startup and fail with "the database system is starting up".
+      test: ['CMD-SHELL', 'pg_isready -U cinnamon -d cinnamon']
+      interval: 2s
+      timeout: 5s
+      retries: 15
+
+volumes:
+  cinnamon-pgdata:

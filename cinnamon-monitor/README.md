@@ -14,27 +14,30 @@ forestry can be added without a schema rewrite.
 
 ## Quick start
 
-The app uses PostgreSQL. Point it at a [Neon](https://neon.tech) branch or a local Postgres:
-
 ```bash
 cd cinnamon-monitor
 npm install
-cp .env.example .env          # then set DATABASE_URL, DIRECT_URL and JWT_SECRET
-npm run setup                 # prisma generate + migrate deploy + seed
-npm run dev                   # http://localhost:3000
+cp .env.example .env    # works unedited for local development
+npm run db:up           # starts PostgreSQL in Docker, waits until it is ready
+npm run setup           # applies migrations and loads demo data
+npm run dev             # http://localhost:3000
 ```
 
-Need a database first? Either create a Neon branch (see [DEPLOYMENT.md](DEPLOYMENT.md)) or run one
-locally:
+Requires Node 18+ and Docker. The `.env.example` defaults match `docker-compose.yml`, so nothing
+needs editing to run locally.
 
-```bash
-docker run -d --name cinnamon-pg -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:16
-# DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cinnamon"
-# DIRECT_URL="postgresql://postgres:postgres@localhost:5432/cinnamon"
-```
+**No Docker?** Use any PostgreSQL 14+ instance — a local install, or a free
+[Neon](https://neon.tech) branch — and put its connection string in `.env` as both `DATABASE_URL`
+and `DIRECT_URL`, then skip `npm run db:up`.
 
 `npm run setup` applies `prisma/migrations/0_init` and loads demo data. The seed **wipes every table
 first**, so never run it against a database holding real records.
+
+| Command | Does |
+| --- | --- |
+| `npm run db:up` / `db:down` | Start / stop the local Postgres container |
+| `npm run db:seed` | Reset demo data to a clean state |
+| `npm run db:studio` | Browse the database in a GUI |
 
 ### Demo accounts
 
