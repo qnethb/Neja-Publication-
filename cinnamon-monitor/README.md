@@ -14,15 +14,27 @@ forestry can be added without a schema rewrite.
 
 ## Quick start
 
+The app uses PostgreSQL. Point it at a [Neon](https://neon.tech) branch or a local Postgres:
+
 ```bash
 cd cinnamon-monitor
 npm install
-cp .env.example .env          # then edit JWT_SECRET
-npm run setup                 # prisma generate + db push + seed
+cp .env.example .env          # then set DATABASE_URL, DIRECT_URL and JWT_SECRET
+npm run setup                 # prisma generate + migrate deploy + seed
 npm run dev                   # http://localhost:3000
 ```
 
-`npm run setup` creates `prisma/dev.db`, applies the schema and loads demo data.
+Need a database first? Either create a Neon branch (see [DEPLOYMENT.md](DEPLOYMENT.md)) or run one
+locally:
+
+```bash
+docker run -d --name cinnamon-pg -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:16
+# DATABASE_URL="postgresql://postgres:postgres@localhost:5432/cinnamon"
+# DIRECT_URL="postgresql://postgres:postgres@localhost:5432/cinnamon"
+```
+
+`npm run setup` applies `prisma/migrations/0_init` and loads demo data. The seed **wipes every table
+first**, so never run it against a database holding real records.
 
 ### Demo accounts
 
@@ -39,11 +51,12 @@ All seeded users share the password **`Cinnamon@123`**.
 
 ### Environment variables
 
-| Variable | Purpose |
-| --- | --- |
-| `DATABASE_URL` | `file:./dev.db` for SQLite; a `postgresql://…` URL for Postgres |
-| `JWT_SECRET` | Signs the session cookie. Use a long random string in production |
-| `SESSION_DAYS` | Session lifetime in days (default `7`) |
+| Variable | Required | Purpose |
+| --- | --- | --- |
+| `DATABASE_URL` | Yes | Postgres connection used by the app. On Neon this is the **pooled** URL (host contains `-pooler`) |
+| `DIRECT_URL` | Yes | **Direct** (non-pooled) Postgres URL. Used only by `prisma migrate`, which cannot run through a pooler |
+| `JWT_SECRET` | Yes | Signs the session cookie. Generate with `openssl rand -base64 32` |
+| `SESSION_DAYS` | No | Session lifetime in days (default `7`) |
 
 ### Scripts
 
@@ -51,20 +64,21 @@ All seeded users share the password **`Cinnamon@123`**.
 | --- | --- |
 | `npm run dev` | Development server |
 | `npm run build` / `npm start` | Production build and serve |
-| `npm run db:push` | Apply the schema without a migration history |
-| `npm run db:migrate` | Create a proper migration |
+| `npm run db:deploy` | Apply committed migrations (production and CI) |
+| `npm run db:migrate` | Create a new migration during development |
+| `npm run db:studio` | Browse and edit the database in a GUI |
 | `npm run db:seed` | Re-seed demo data (wipes existing rows first) |
 | `npm run db:reset` | Drop, re-migrate and re-seed |
 
-### Switching to PostgreSQL
+### Deployment
 
-1. In `prisma/schema.prisma` set `provider = "postgresql"`.
-2. Point `DATABASE_URL` at the server.
-3. `npm run db:migrate`, then `npm run db:seed`.
+See **[DEPLOYMENT.md](DEPLOYMENT.md)** for a step-by-step Vercel + Neon Postgres deployment,
+including every environment variable and the Root Directory setting that first deploys usually miss.
 
-Nothing else changes: the schema deliberately avoids SQLite-only constructs. Enum-like fields are
-stored as `String` (SQLite has no Prisma enums) with the allowed values centralised in
-`src/lib/domain.ts` — convert them to real Postgres enums later if you want database-level checks.
+Enum-like fields are stored as `String` with the allowed values centralised in `src/lib/domain.ts`
+rather than as native Postgres enums. That keeps the domain portable to Airtable/Glide single-selects
+and lets new values ship without a migration; convert them to real enums if you would rather have
+database-level checks.
 
 ---
 
@@ -73,7 +87,8 @@ stored as `String` (SQLite has no Prisma enums) with the allowed values centrali
 ```
 cinnamon-monitor/
 ├─ prisma/
-│  ├─ schema.prisma           Group → Estate → Division data model
+│  ├─ schema.prisma           Group → Estate → Division data model (PostgreSQL)
+│  ├─ migrations/             Committed SQL migrations (0_init)
 │  └─ seed.ts                 Deterministic demo data (5 groups, 3 estates, 9 divisions)
 ├─ src/
 │  ├─ app/
@@ -287,7 +302,7 @@ formula** above — they are the parts that are easy to get subtly wrong.
 
 ## Tech stack
 
-Next.js 14 (App Router) · React 18 · Tailwind CSS · TanStack Query · Prisma · SQLite/PostgreSQL ·
+Next.js 14 (App Router) · React 18 · Tailwind CSS · TanStack Query · Prisma · PostgreSQL (Neon) ·
 Leaflet + react-leaflet · Recharts · pdfkit · bcryptjs + jsonwebtoken.
 
 ## Notes and limitations

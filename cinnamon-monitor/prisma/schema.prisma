@@ -1,18 +1,20 @@
 // Cinnamon Plantation Monitor — Lalan Rubbers Pvt Ltd (Agri Division)
 // Hierarchy: Group -> Estate -> Division -> (CinnamonBlock | records)
 //
-// SQLite is used for local development. To move to PostgreSQL, change the
-// datasource provider to "postgresql" and point DATABASE_URL at the server.
-// Enum-like fields are stored as String because SQLite does not support
-// Prisma enums; the allowed values live in src/lib/domain.ts.
+// PostgreSQL (Neon in production). DATABASE_URL is the pooled connection used
+// by the running app; DIRECT_URL is the non-pooled connection Prisma needs for
+// migrations, which cannot run through a connection pooler.
+// Enum-like fields are stored as String, with the allowed values in
+// src/lib/domain.ts, so the domain stays portable to a no-code table layout.
 
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
 }
 
 model User {
