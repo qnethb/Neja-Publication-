@@ -1,0 +1,55 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+html,
+body {
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  @apply bg-slate-50 text-ink antialiased;
+}
+
+@layer components {
+  .card {
+    @apply rounded-xl border border-slate-200 bg-white shadow-sm;
+  }
+  .card-pad {
+    @apply p-4;
+  }
+  .btn {
+    @apply inline-flex min-h-[44px] items-center justify-center gap-2 rounded-lg px-4 text-sm font-semibold transition active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50;
+  }
+  .btn-primary {
+    @apply btn bg-forest-600 text-white hover:bg-forest-700;
+  }
+  .btn-secondary {
+    @apply btn border border-forest-200 bg-white text-forest-700 hover:bg-forest-50;
+  }
+  .btn-amber {
+    @apply btn bg-cinnamon-400 text-white hover:bg-cinnamon-500;
+  }
+  .input {
+    @apply min-h-[44px] w-full rounded-lg border border-slate-300 bg-white px-3 text-sm text-ink outline-none focus:border-forest-500 focus:ring-2 focus:ring-forest-100;
+  }
+  .label {
+    @apply mb-1 block text-xs font-semibold uppercase tracking-wide text-slate-500;
+  }
+  .chip {
+    @apply inline-flex items-center rounded-full px-2.5 py-1 text-[11px] font-bold uppercase tracking-wide;
+  }
+  .section-title {
+    @apply text-sm font-bold uppercase tracking-wide text-slate-500;
+  }
+}
+
+.leaflet-container {
+  font: inherit;
+  border-radius: 0.75rem;
+  z-index: 0;
+}

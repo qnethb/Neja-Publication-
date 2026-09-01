@@ -1,0 +1,218 @@
+// Cinnamon Plantation Monitor — Lalan Rubbers Pvt Ltd (Agri Division)
+// Hierarchy: Group -> Estate -> Division -> (CinnamonBlock | records)
+//
+// SQLite is used for local development. To move to PostgreSQL, change the
+// datasource provider to "postgresql" and point DATABASE_URL at the server.
+// Enum-like fields are stored as String because SQLite does not support
+// Prisma enums; the allowed values live in src/lib/domain.ts.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  name         String
+  email        String   @unique
+  passwordHash String
+  // FIELD_OFFICER | DIVISION_MANAGER | ESTATE_MANAGER | GROUP_GM | TOP_MANAGEMENT
+  role         String
+  phone        String?
+  active       Boolean  @default(true)
+  createdAt    DateTime @default(now())
+
+  // Explicit management appointments
+  gmOfGroups        Group[]  @relation("GroupGeneralManager")
+  managerOfEstates  Estate[] @relation("EstateManager")
+  assistantOfEstates Estate[] @relation("EstateAssistantManager")
+
+  // Access scopes (many-to-many)
+  groups    Group[]    @relation("UserGroups")
+  estates   Estate[]   @relation("UserEstates")
+  divisions Division[] @relation("UserDivisions")
+
+  operations              OperationLog[]   @relation("OperationLoggedBy")
+  assignedRecommendations Recommendation[] @relation("RecommendationAssignee")
+  createdRecommendations  Recommendation[] @relation("RecommendationAuthor")
+
+  @@index([role])
+}
+
+model Group {
+  id               String  @id @default(cuid())
+  name             String  @unique
+  region           String
+  generalManagerId String?
+  generalManager   User?   @relation("GroupGeneralManager", fields: [generalManagerId], references: [id])
+
+  estates Estate[]
+  members User[]   @relation("UserGroups")
+}
+
+model Estate {
+  id                 String  @id @default(cuid())
+  groupId            String
+  group              Group   @relation(fields: [groupId], references: [id], onDelete: Cascade)
+  name               String
+  code               String  @unique
+  managerId          String?
+  manager            User?   @relation("EstateManager", fields: [managerId], references: [id])
+  assistantManagerId String?
+  assistantManager   User?   @relation("EstateAssistantManager", fields: [assistantManagerId], references: [id])
+  totalAreaHa        Float
+  // Comma separated crop codes, e.g. "RUBBER,CINNAMON,TEA" (see domain.ts)
+  mainCrops          String
+  district           String?
+
+  divisions Division[]
+  members   User[]     @relation("UserEstates")
+
+  @@index([groupId])
+}
+
+model Division {
+  id               String  @id @default(cuid())
+  estateId         String
+  estate           Estate  @relation(fields: [estateId], references: [id], onDelete: Cascade)
+  name             String
+  areaHa           Float
+  // RUBBER | COCONUT | TEA | CINNAMON | OIL_PALM | FORESTRY
+  primaryCrop      String
+  plantingYear     Int
+  variety          String?
+  geoJsonBoundary  String?
+  centroidLat      Float?
+  centroidLng      Float?
+  soilType         String?
+  // RAINFED | DRIP | SPRINKLER | FLOOD
+  irrigationType   String?
+
+  blocks          CinnamonBlock[]
+  cropHistory     CropHistory[]
+  operations      OperationLog[]
+  soilWeather     SoilWeatherSnapshot[]
+  predictions     Prediction[]
+  recommendations Recommendation[]
+  members         User[]                @relation("UserDivisions")
+
+  @@unique([estateId, name])
+  @@index([primaryCrop])
+}
+
+model CinnamonBlock {
+  id             String   @id @default(cuid())
+  divisionId     String
+  division       Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  blockCode      String
+  areaHa         Float
+  plantingDate   DateTime
+  density        Int
+  soilType       String?
+  irrigationType String?
+
+  @@unique([divisionId, blockCode])
+}
+
+model CropHistory {
+  id                    String   @id @default(cuid())
+  divisionId            String
+  division              Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  crop                  String   @default("CINNAMON")
+  // Human readable season label, e.g. "2023/24"
+  season                String
+  seasonStart           DateTime
+  seasonEnd             DateTime
+  expectedYieldKgHa     Float
+  actualYieldKgHa       Float?
+  gradeMixQuillPct      Float?
+  gradeMixFeatheringsPct Float?
+  gradeMixChipsPct      Float?
+  // MANUAL_PEELING | MECHANISED | MIXED
+  harvestMethod         String?
+  notes                 String?
+
+  @@unique([divisionId, crop, season])
+  @@index([season])
+}
+
+model OperationLog {
+  id           String   @id @default(cuid())
+  divisionId   String
+  division     Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  date         DateTime
+  // WEEDING | PRUNING | FERTILIZING | PEST_CONTROL | HARVESTING | OTHER
+  operationType String
+  inputProduct String?
+  rate         String?
+  costLkr      Float    @default(0)
+  laborHours   Float    @default(0)
+  weatherNotes String?
+  loggedById   String?
+  loggedBy     User?    @relation("OperationLoggedBy", fields: [loggedById], references: [id])
+  createdAt    DateTime @default(now())
+
+  @@index([divisionId, date])
+}
+
+model SoilWeatherSnapshot {
+  id              String   @id @default(cuid())
+  divisionId      String
+  division        Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  date            DateTime
+  pH              Float?
+  nitrogenPpm     Float?
+  phosphorusPpm   Float?
+  potassiumPpm    Float?
+  organicMatterPct Float?
+  rainfallMm      Float?
+  tempC           Float?
+  // LAB | SENSOR | MANUAL
+  source          String   @default("MANUAL")
+
+  @@index([divisionId, date])
+}
+
+model Prediction {
+  id                 String   @id @default(cuid())
+  divisionId         String
+  division           Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  season             String
+  predictedYieldKgHa Float
+  confidencePct      Float
+  modelVersion       String
+  keyDrivers         String
+  createdAt          DateTime @default(now())
+
+  @@unique([divisionId, season, modelVersion])
+  @@index([divisionId])
+}
+
+model Recommendation {
+  id                String   @id @default(cuid())
+  divisionId        String
+  division          Division @relation(fields: [divisionId], references: [id], onDelete: Cascade)
+  // HIGH | MEDIUM | LOW
+  priority          String
+  actionTitle       String
+  actionDescription String
+  rationale         String?
+  expectedImpact    String?
+  assignedToId      String?
+  assignedTo        User?    @relation("RecommendationAssignee", fields: [assignedToId], references: [id])
+  createdById       String?
+  createdBy         User?    @relation("RecommendationAuthor", fields: [createdById], references: [id])
+  dueDate           DateTime?
+  // PENDING | IN_PROGRESS | COMPLETED | OVERDUE
+  status            String   @default("PENDING")
+  progressNotes     String?
+  completedAt       DateTime?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@index([divisionId, status])
+}

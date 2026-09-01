@@ -86,3 +86,12 @@ React 18 · React Router 6 · Vite 5 · plain CSS (no UI framework).
 ---
 
 Made with ❤️ in Sri Lanka for Neja Publication.
+
+---
+
+## Projects in this repository
+
+| Path | Project |
+| --- | --- |
+| `/` | Neja Publication — bilingual online bookstore (Vite + React) |
+| `cinnamon-monitor/` | Cinnamon Plantation Monitor for Lalan Rubbers Pvt Ltd (Next.js 14 + Prisma) — see [`cinnamon-monitor/README.md`](cinnamon-monitor/README.md) |
